@@ -184,7 +184,7 @@ module Statesman
 
         return params if column.nil?
 
-        timestamp = if ::ActiveRecord::Base.default_timezone == :utc
+        timestamp = if ::ActiveRecord.default_timezone == :utc
                       Time.now.utc
                     else
                       Time.now
@@ -195,8 +195,8 @@ module Statesman
     end
 
     class ActiveRecordAfterCommitWrap
-      def initialize
-        @callback = Proc.new
+      def initialize(&block)
+        @callback = block
         @connection = ::ActiveRecord::Base.connection
       end
 
